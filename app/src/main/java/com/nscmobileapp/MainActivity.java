@@ -1,5 +1,6 @@
 package com.nscmobileapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         gridView = findViewById(R.id.gridview);
         gridView.setAdapter(new ButtonAdapter(this));
-//
+
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             String selectedName = names[position];
             int selectedImage = images[position];
@@ -91,17 +92,21 @@ public class MainActivity extends AppCompatActivity {
                 button = new Button(mContext);
 
                 button.setText(fieldMap.get(buttonId));
+                button.setId(buttonId);
                 buttonId++;
             } else {
                 button = (Button) view;
             }
 
             button.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Button #" + (i + 1), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ShowMovies.class);
-                    startActivity(intent);
+                    if (v.getId() == 1) {
+                        Intent intent = new Intent(MainActivity.this, ShowMovies.class);
+                        startActivity(intent);
+                    }
                 }
             });
             return button;
