@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,9 @@ public class ClickedItemActivity extends AppCompatActivity {
 
     ImageView imageView;
     TextView textView;
+    TextView descriptionView;
+    TextView directorView;
+    TextView yearView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,14 +30,26 @@ public class ClickedItemActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.tvName);
+        directorView = findViewById(R.id.director);
+        yearView = findViewById(R.id.year);
+        descriptionView = findViewById(R.id.description);
+
 
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
-            String selectedName = intent.getStringExtra("name");
             int selectedImage = intent.getIntExtra("image", 0);
+            String selectedName = intent.getStringExtra("name");
+            String year = intent.getStringExtra("year");
+            String director = intent.getStringExtra("director");
+            String description = intent.getStringExtra("description");
 
-            textView.setText(selectedName);
             imageView.setImageResource(selectedImage);
+            textView.setText(selectedName);
+            directorView.setText(director);
+            yearView.setText(year);
+            descriptionView.setText(description);
+            descriptionView.setMovementMethod(new ScrollingMovementMethod());
+
         }
     }
 }
