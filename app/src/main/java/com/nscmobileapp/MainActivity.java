@@ -15,6 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.Arrays;
 import java.util.Map;
 
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.zombie_placeholder};
 
     //This _should_ work but I can't get it to compile
-    //Picasso.get();
+    Picasso.get();
 
     GridView gridView;
     @Override
