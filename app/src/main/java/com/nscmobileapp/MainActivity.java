@@ -3,6 +3,8 @@ package com.nscmobileapp;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -22,8 +24,8 @@ import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity {
-
     GridView gridView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,12 +83,28 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ShowMovies.class);
                         startActivity(intent);
                     } else if (v.getId() == 2) {
-                        Intent intent2 = new Intent(MainActivity.this, TrafficActivity.class);
-                        startActivity(intent2);
+                        if (hasConnection()) {
+                            startActivity(new Intent(MainActivity.this, TrafficActivity.class));
+                        } else {
+                            Toast.makeText(v.getContext(),
+                                    "Please check you connection and try again",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
             return button;
+        }
+    }
+
+    private boolean hasConnection() {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+        if (activeInfo != null && activeInfo.isConnected()) {
+            return activeInfo.getType() == ConnectivityManager.TYPE_WIFI || activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+        } else {
+            return false;
         }
     }
 }

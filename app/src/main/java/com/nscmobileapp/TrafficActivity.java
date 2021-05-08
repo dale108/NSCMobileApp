@@ -4,6 +4,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -50,7 +53,7 @@ public class TrafficActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Map<String, Object> map = gson.fromJson(response, Map.class);
                         Optional.ofNullable(map.get("Features"))
-                                .map(list -> (List)list)
+                                .map(list -> (List) list)
                                 .ifPresent(camList -> {
                                     initializeView(makeCameraList(camList));
                                 });
@@ -61,9 +64,7 @@ public class TrafficActivity extends AppCompatActivity {
     }
 
     public void initializeView(List<Camera> collect) {
-
-        CustomAdapter customAdapter =
-                new CustomAdapter(collect, this);
+        CustomAdapter customAdapter = new CustomAdapter(collect, this);
         gridView.setAdapter(customAdapter);
     }
 
@@ -121,5 +122,4 @@ public class TrafficActivity extends AppCompatActivity {
             return convertView;
         }
     }
-
 }
