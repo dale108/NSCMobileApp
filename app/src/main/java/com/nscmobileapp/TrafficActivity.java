@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -22,8 +23,10 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -55,7 +58,13 @@ public class TrafficActivity extends AppCompatActivity {
                         Optional.ofNullable(map.get("Features"))
                                 .map(list -> (List) list)
                                 .ifPresent(camList -> {
-                                    initializeView(makeCameraList(camList));
+                                    if (getIntent().getBooleanExtra("showMap", false)) {
+                                        ArrayList<LatLng> camPositions = extractCoordinates(camList);
+                                        startActivity(
+                                                new Intent(TrafficActivity.this, MapActivity.class).putExtra("positionList", camPositions));
+                                    } else {
+                                        initializeView(makeCameraList(camList));
+                                    }
                                 });
                     }
                 }, error ->
@@ -68,6 +77,12 @@ public class TrafficActivity extends AppCompatActivity {
         gridView.setAdapter(customAdapter);
     }
 
+    private ArrayList<String> extractCoordinates(final List<Map> camList) {
+        return camList.stream().map(camElement -> camElement.get("PointCoordinate"))
+                .map(camElement -> (List)camElement)
+                .map(camElement -> camElement.get(0) + " " + camElement.get(1))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     private List<Camera> makeCameraList(List<Map> camList) {

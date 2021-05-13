@@ -79,12 +79,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Button #" + (i + 1), Toast.LENGTH_SHORT).show();
+                    if (v.getId() == 0) {
+                        startActivity(new Intent(MainActivity.this, TrafficActivity.class)
+                                .putExtra("showMap", true));
+                    }
                     if (v.getId() == 1) {
                         Intent intent = new Intent(MainActivity.this, ShowMovies.class);
                         startActivity(intent);
                     } else if (v.getId() == 2) {
                         if (hasConnection()) {
-                            startActivity(new Intent(MainActivity.this, TrafficActivity.class));
+                            startActivity(new Intent(MainActivity.this, TrafficActivity.class)
+                                    .putExtra("showMap", false));
                         } else {
                             Toast.makeText(v.getContext(),
                                     "Please check you connection and try again",
