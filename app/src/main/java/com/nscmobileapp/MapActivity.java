@@ -14,16 +14,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
     private final LatLng SEATTLE = new LatLng(47.620853417739966, -122.34936323068771);
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -33,12 +31,6 @@ public class MapActivity extends AppCompatActivity
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-
-        ArrayList<String> positionList =  getIntent().getStringArrayListExtra("positionList");
-        List<LatLng> collect = positionList.stream().map(location -> location.split(" "))
-                .map(splitLocation ->
-                        new LatLng(Double.parseDouble(splitLocation[0]), Double.parseDouble(splitLocation[1])))
-                .collect(Collectors.toList());
         mapFragment.getMapAsync(this);
     }
 
@@ -55,14 +47,20 @@ public class MapActivity extends AppCompatActivity
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addCameraMarkers(GoogleMap googleMap) {
-        ArrayList<String> positionList =  getIntent().getStringArrayListExtra("positionList");
-        positionList.stream().map(location -> location.split(" "))
-                .map(splitLocation ->
-                        new LatLng(Double.parseDouble(splitLocation[0]), Double.parseDouble(splitLocation[1])))
-                .map(latLng -> {
-                    boolean k = true;
-                    return googleMap.addMarker(new MarkerOptions().position(latLng));
-                });
+        ArrayList<String> positionList = getIntent().getStringArrayListExtra("positionList");
+        Map<String, LatLng> positionData = new HashMap<>();
+        for (String s : positionList) {
+            String[] split = s.split(",");
+            positionData.put(split[2], new LatLng(Double.parseDouble(split[0]), Double.parseDouble(split[1])));
+        }
+
+        positionData.forEach((k, v) -> {
+            boolean ok = true;
+            googleMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                    .position(v)
+                    .title(k));
+        });
     }
 }
 

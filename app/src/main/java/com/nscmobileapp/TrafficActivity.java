@@ -57,13 +57,15 @@ public class TrafficActivity extends AppCompatActivity {
                         Map<String, Object> map = gson.fromJson(response, Map.class);
                         Optional.ofNullable(map.get("Features"))
                                 .map(list -> (List) list)
-                                .ifPresent(camList -> {
+                                .ifPresent(jsonToParse -> {
+                                    List<Camera> cameraList = makeCameraList(jsonToParse);
                                     if (getIntent().getBooleanExtra("showMap", false)) {
-                                        ArrayList<LatLng> camPositions = extractCoordinates(camList);
+                                        ArrayList<String> formattedCameraData = cameraList.stream()
+                                                .map(cam -> cam.getFormattedLocationData()).collect(Collectors.toCollection(ArrayList::new));
                                         startActivity(
-                                                new Intent(TrafficActivity.this, MapActivity.class).putExtra("positionList", camPositions));
+                                                new Intent(TrafficActivity.this, MapActivity.class).putExtra("positionList", formattedCameraData));
                                     } else {
-                                        initializeView(makeCameraList(camList));
+                                        initializeView(cameraList);
                                     }
                                 });
                     }
@@ -77,26 +79,26 @@ public class TrafficActivity extends AppCompatActivity {
         gridView.setAdapter(customAdapter);
     }
 
-    private ArrayList<String> extractCoordinates(final List<Map> camList) {
-        return camList.stream().map(camElement -> camElement.get("PointCoordinate"))
-                .map(camElement -> (List)camElement)
+    private ArrayList<String> extractCoordinates(final List<Map> jsonToParse) {
+        return jsonToParse.stream().map(camElement -> camElement.get("PointCoordinate"))
+                .map(camElement -> (List) camElement)
                 .map(camElement -> camElement.get(0) + " " + camElement.get(1))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    private List<Camera> makeCameraList(List<Map> camList) {
-        return camList.stream()
-                .map(camElement -> camElement.get("Cameras"))
-                .map(camElement -> (List) camElement)
-                .map(camElement -> camElement.get(0))
-                .map(camElement -> (Map) camElement)
-                .map(camElement -> makeCamera((String) camElement.get("Id"), (String) camElement.get("Description"), (String) camElement.get("ImageUrl"), (String) camElement.get("Type")))
-                .collect(Collectors.toList());
-    }
+    private List<Camera> makeCameraList(List<Map> jsonToParse) {
+        List<Camera> cameraList = new ArrayList<>();
+        for (Map camMap : jsonToParse) {
+            List nestedList = (List) camMap.get("Cameras");
+            Map camDetails = (Map) nestedList.get(0);
+            List<Double> coordinateList = (List<Double>) camMap.get("PointCoordinate");
 
-    private Camera makeCamera(String id, String description, String imageUrl, String type) {
-        return new Camera(id, description, imageUrl, type);
+            cameraList.add(new Camera(coordinateList.get(0), coordinateList.get(1),
+                    (String) camDetails.get("Id"), (String) camDetails.get("Description"),
+                    (String) camDetails.get("ImageUrl"), (String) camDetails.get("Type")));
+        }
+        return cameraList;
     }
 
     public class CustomAdapter extends BaseAdapter {
