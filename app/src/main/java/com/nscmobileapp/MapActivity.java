@@ -68,7 +68,7 @@ public class MapActivity extends AppCompatActivity
                 googleMap.addMarker(new MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .position(latLng)
-                .title("User Marker"));
+                .title(String.format("lat:%s, lon:%s", latLng.latitude, latLng.longitude)));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
             }
         });
