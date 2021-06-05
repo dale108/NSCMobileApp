@@ -58,20 +58,20 @@ public class MapActivity extends AppCompatActivity
     }
 
     private void setMyLastLocation(GoogleMap googleMap) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                googleMap.addMarker(new MarkerOptions()
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                .position(latLng)
-                .title(String.format("lat:%s, lon:%s", latLng.latitude, latLng.longitude)));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-            }
-        });
+//        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return;
+//        }
+//        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+//            if (location != null) {
+//                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+////                googleMap.addMarker(new MarkerOptions()
+////                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+//                .position(latLng)
+//                .title(String.format("lat:%s, lon:%s", latLng.latitude, latLng.longitude)));
+//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+            //}
+     //   });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -92,11 +92,10 @@ public class MapActivity extends AppCompatActivity
         }
 
         positionData.forEach((k, v) -> {
-            boolean ok = true;
-            googleMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
-                    .position(v)
-                    .title(k));
+//            googleMap.addMarker(new MarkerOptions()
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+//                    .position(v)
+//                    .title(k));
         });
     }
 }
