@@ -34,8 +34,7 @@ public class ShowMovies extends AppCompatActivity {
             R.drawable.zombie_placeholder, R.drawable.zombie_placeholder, R.drawable.zombie_placeholder, R.drawable.zombie_placeholder, R.drawable.zombie_placeholder,
             R.drawable.zombie_placeholder};
 
-    //This _should_ work but I can't get it to compile
-    //Picasso.get();
+
 
     GridView gridView;
     @Override
@@ -46,19 +45,16 @@ public class ShowMovies extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter(names, images, this);
         gridView.setAdapter(customAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedName = names[position];
-                int selectedImage = images[position];
-                Intent intent = new Intent(ShowMovies.this, ClickedItemActivity.class)
-                        .putExtra("name", selectedName)
-                        .putExtra("image", selectedImage)
-                        .putExtra("director", movies[position][2])
-                        .putExtra("year", movies[position][1])
-                        .putExtra("description", movies[position][4]);
-                startActivity(intent);
-            }
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedName = names[position];
+            int selectedImage = images[position];
+            Intent intent = new Intent(ShowMovies.this, ClickedItemActivity.class)
+                    .putExtra("name", selectedName)
+                    .putExtra("image", selectedImage)
+                    .putExtra("director", movies[position][2])
+                    .putExtra("year", movies[position][1])
+                    .putExtra("description", movies[position][4]);
+            startActivity(intent);
         });
     }
 
@@ -66,6 +62,7 @@ public class ShowMovies extends AppCompatActivity {
         private String[] imageNames;
         private int[] imagesPhoto;
         private LayoutInflater layoutInflater;
+
 
         public CustomAdapter(String[] imageNames, int[] imagesPhoto, Context context) {
             this.imageNames = imageNames;
@@ -98,7 +95,9 @@ public class ShowMovies extends AppCompatActivity {
             ImageView imageView = convertView.findViewById(R.id.imageView);
 
             tvName.setText(imageNames[position] + " " + movies[position][1]);
-            imageView.setImageResource(imagesPhoto[position]);
+
+            String s = movies[position][3];
+            Picasso.get().load(movies[position][3]).into(imageView);
             return convertView;
         }
     }

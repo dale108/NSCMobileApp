@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "918571089084",
+    "firebase_url": "https://ad340-24b27.firebaseio.com",
+    "project_id": "ad340-24b27",
+    "storage_bucket": "ad340-24b27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:970483956502:android:35bf1584118e58e6d42e37",
+        "android_client_info": {
+          "package_name": "com.nscmobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "970483956502-250ge815dpljmu1eeiqpngv2qvhslccd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvMD1G4-l9ahX0r9Jwb-1W3sohJA1-6NY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "970483956502-250ge815dpljmu1eeiqpngv2qvhslccd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
