@@ -32,6 +32,7 @@ import java.util.Map;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class MainActivity extends AppCompatActivity {
+    //proof of recency
     GridView gridView;
     EditText emailElement;
     EditText userNameElement;
