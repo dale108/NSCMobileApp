@@ -38,6 +38,7 @@ import com.squareup.picasso.RequestCreator;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
 public class TrafficActivity extends AppCompatActivity {
+    // this is latest build
     private static final Gson gson = new Gson();
     GridView gridView;
 
