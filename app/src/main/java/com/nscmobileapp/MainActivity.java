@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Toast.makeText(v.getContext(), "Button #" + (i + 1), Toast.LENGTH_SHORT).show();
                     if (v.getId() == 0) {
-                        startActivity(new Intent(MainActivity.this, TrafficActivity.class)
+                        startActivity(new Intent(MainActivity.this, MapActivity.class)
                                 .putExtra("showMap", true));
                     }
                     if (v.getId() == 1) {
